@@ -31,6 +31,10 @@ window.addEventListener('load', async () => {
         let horometro = document.getElementById('horometro').value;
         let observaciones = document.getElementById('observaciones').value;
 
+        let nombreJefe = document.getElementById('nombreJefe').value;
+        let dniJefe = document.getElementById('dniJefe').value;
+
+
          // Obtener la opción seleccionada de "Revisión técnica"
         let revisionTecnica = document.querySelector('input[name="revision_tecnica"]:checked').value;
         let revisionTecnicaShort = '';
@@ -795,7 +799,10 @@ window.addEventListener('load', async () => {
 
             remolqueShort,
             tacosShort,
-            lampaShort
+            lampaShort,
+
+            nombreJefe,
+            dniJefe
 
 
         );
@@ -811,7 +818,7 @@ async function generatePDF(nombres, placa, horometro,observaciones, revisionTecn
                             oruga, caja_conductora_oruga, rodillos_inferiores, rodillos_superiores, sistema_tensor,
                             zapatas_oruga, logo_empresa, limpieza_interior_cabina, limpieza_externa, fugas_visibles,
                             marcador_nivel_combustible,  marcador_presion_aceite, horometrot, panel_control,
-                            acelerador_manual, palanca_bloqueo_hidraulico, cucharron, brazo, cilindro_hidraulico, circulina, remolque, tacos, lampa) {
+                            acelerador_manual, palanca_bloqueo_hidraulico, cucharron, brazo, cilindro_hidraulico, circulina, remolque, tacos, lampa, nombreJefe, dniJefe) {
     // Cargar la imagen JPG
     const image = await loadImage("formulario.jpg");
         
@@ -1309,8 +1316,14 @@ async function generatePDF(nombres, placa, horometro,observaciones, revisionTecn
         pdf.text('A', 513, 550);  // posición para "No Aplica"
     }
 
+    pdf.setFont("times", "italic"); // Cambia el tipo de fuente a Times y estilo a cursiva (italic)
+    pdf.text(nombreJefe, 287, 657);
+    pdf.text('DNI ' + dniJefe, 287, 665);
+    pdf.text(formattedDate, 287, 673);
+
+    
     pdf.setFillColor(0,0,0);
-    pdf.save("example.pdf");
+    pdf.save(`CF-${nombres}-${formattedDate}.pdf`);
 
     location.reload(); // Actualiza la página después de generar el PDF
 }
